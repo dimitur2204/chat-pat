@@ -15,21 +15,25 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
     }
     @Override
     public void sendMessage(Message message) {
-
+        try{
+            client.sendMessage(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Server communication error", e);
+        }
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-
+        support.addPropertyChangeListener(listener);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-
+        support.removePropertyChangeListener(listener);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        support.firePropertyChange(evt);
     }
 }
