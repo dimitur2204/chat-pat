@@ -18,7 +18,7 @@ public class ViewHandler {
 
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        openView(ViewFactory.CALCULATOR);
+        openView(ViewFactory.CHAT_LIST);
     }
 
     public void openView(String id) {
