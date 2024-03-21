@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CalculatorApplication extends Application {
+public class ChatApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         MathClient client = new MathClientImplementation("localhost", 8080);

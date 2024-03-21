@@ -1,16 +1,17 @@
 package dk.via.calculator.client;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.AsynchronousCloseException;
 
 public class MessageListener implements Runnable {
-    private final MathClientImplementation client;
+    private final Client client;
     private final MulticastSocket multicastSocket;
     private final InetSocketAddress socketAddress;
     private final NetworkInterface netInterface;
 
-    public MessageListener(MathClientImplementation client, String groupAddress, int port) throws IOException {
+    public MessageListener(Client client, String groupAddress, int port) throws IOException {
         this.client = client;
         this.multicastSocket = new MulticastSocket(port);
         InetAddress group = InetAddress.getByName(groupAddress);
