@@ -1,16 +1,16 @@
 package dk.via.calculator.viewmodel;
 
-import dk.via.calculator.model.Model;
-import dk.via.calculator.model.Result;
+import dk.via.calculator.model.ChatModel;
+import dk.via.calculator.model.Message;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 public class ChatViewModel implements PropertyChangeListener {
-    private final Model model;
+    private final ChatModel model;
     private SimpleStringProperty message;
-    public ChatViewModel(Model model) {
+    public ChatViewModel(ChatModel model) {
         this.model = model;
         model.addPropertyChangeListener(this);
     }
@@ -18,7 +18,7 @@ public class ChatViewModel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Platform.runLater(() -> {
-            Result result = (Result) evt.getNewValue();
+            Message result = (Message) evt.getNewValue();
             message.set(result.toString());
         });
     }

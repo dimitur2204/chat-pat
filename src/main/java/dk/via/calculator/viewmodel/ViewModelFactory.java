@@ -1,26 +1,19 @@
 package dk.via.calculator.viewmodel;
 
-import dk.via.calculator.model.Model;
+import dk.via.calculator.model.ChatModel;
 
 public class ViewModelFactory {
-    private final CalculatorViewModel convertViewModel;
-    private final ChatListViewModel chatListViewModel;
     private final ChatViewModel chatViewModel;
+    private final LoginViewModel loginViewModel;
 
-    public ViewModelFactory(Model model) {
-        this.convertViewModel = new CalculatorViewModel(model);
-        this.chatListViewModel = new ChatListViewModel(model);
-        this.chatViewModel = new ChatViewModel(model);
-    }
-
-
-    public CalculatorViewModel getConvertViewModel() {
-        return convertViewModel;
-    }
-    public ChatListViewModel getChatListViewModel() {
-        return chatListViewModel;
+    public ViewModelFactory(ChatModel chatModel) {
+        this.chatViewModel = new ChatViewModel(chatModel);
+        this.loginViewModel = new LoginViewModel(chatModel);
     }
     public ChatViewModel getChatViewModel() {
         return chatViewModel;
+    }
+    public LoginViewModel getLoginViewModel() {
+        return loginViewModel;
     }
 }

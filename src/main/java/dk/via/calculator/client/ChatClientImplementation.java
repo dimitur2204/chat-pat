@@ -1,9 +1,7 @@
 package dk.via.calculator.client;
 
 import com.google.gson.Gson;
-import dk.via.calculator.model.Expression;
-import dk.via.calculator.model.Message;
-import dk.via.calculator.model.Result;
+import dk.via.calculator.model.*;
 import dk.via.calculator.socket.StreamFactory;
 
 import java.beans.PropertyChangeListener;
@@ -12,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ChatClientImplementation implements ChatClient {
     private static final String EXIT_JSON = """
@@ -24,7 +23,6 @@ public class ChatClientImplementation implements ChatClient {
     private final Gson gson;
     private final PropertyChangeSupport support;
     private final MessageListener listener;
-
     public ChatClientImplementation(String host, int port) throws IOException {
         socket = new Socket(host, port);
         output = StreamFactory.createWriter(socket);
@@ -47,7 +45,9 @@ public class ChatClientImplementation implements ChatClient {
 
     @Override
     public void sendMessage(Message message) {
-
+        String jsonMsg = gson.toJson(message);
+        output.println(jsonMsg);
+        output.flush();
     }
 
     @Override
@@ -60,8 +60,13 @@ public class ChatClientImplementation implements ChatClient {
         support.removePropertyChangeListener(listener);
     }
 
-    public void receiveBroadcast(String message) {
-        Result result = gson.fromJson(message, Result.class);
-        support.firePropertyChange("result", null, result);
+    public Chat connectOrCreateChat() {
+        Chat chat = new Chat();
+        return chat;
+    }
+
+    public void receiveBroadcast(String jsonMsg) {
+        Message message = gson.fromJson(jsonMsg, Message.class);
+        support.firePropertyChange("message_received", null, message);
     }
 }

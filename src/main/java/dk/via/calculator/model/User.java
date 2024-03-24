@@ -10,4 +10,14 @@ public class User {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            User other = (User) obj;
+            return name.equals(other.name);
+        } else {
+            return false;
+        }
+    }
 }
