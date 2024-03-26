@@ -11,6 +11,4 @@ public interface ChatClient extends Client {
     void addPropertyChangeListener(PropertyChangeListener listener);
 
     void removePropertyChangeListener(PropertyChangeListener listener);
-
-    Chat connectOrCreateChat();
 }

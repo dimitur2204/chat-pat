@@ -21,6 +21,8 @@ public class ChatViewController {
     public void init(ViewHandler viewHandler, ChatViewModel chatViewModel, Region root) {
         this.viewHandler = viewHandler;
         this.viewModel = chatViewModel;
+        msgField.textProperty().bindBidirectional(chatViewModel.messageProperty());
+        sendBtn.setOnAction(event -> chatViewModel.sendMessage());
         this.root = root;
     }
 

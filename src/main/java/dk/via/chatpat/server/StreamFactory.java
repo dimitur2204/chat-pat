@@ -1,4 +1,4 @@
-package dk.via.chatpat.socket;
+package dk.via.chatpat.server;
 
 import java.io.*;
 import java.net.Socket;

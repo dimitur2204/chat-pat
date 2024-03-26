@@ -17,7 +17,7 @@ public class LoginViewController {
         this.viewModel = loginViewModel;
         this.root = root;
         nameField.textProperty().bindBidirectional(loginViewModel.nameProperty());
-        chatButton.setOnAction(event -> loginViewModel.openChat());
+        chatButton.setOnAction(event -> loginViewModel.openChat(viewHandler));
     }
 
     public Region getRoot() {

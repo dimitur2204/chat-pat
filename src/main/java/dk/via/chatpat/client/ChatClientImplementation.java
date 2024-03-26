@@ -1,8 +1,7 @@
 package dk.via.chatpat.client;
 
-import com.google.gson.Gson;
 import dk.via.chatpat.model.*;
-import dk.via.chatpat.socket.StreamFactory;
+import dk.via.chatpat.server.StreamFactory;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -19,14 +18,12 @@ public class ChatClientImplementation implements ChatClient {
     private final Socket socket;
     private final PrintWriter output;
     private final BufferedReader input;
-    private final Gson gson;
     private final PropertyChangeSupport support;
     private final MessageListener listener;
     public ChatClientImplementation(String host, int port) throws IOException {
         socket = new Socket(host, port);
         output = StreamFactory.createWriter(socket);
         input = StreamFactory.createReader(socket);
-        gson = new Gson();
         support = new PropertyChangeSupport(this);
 
         listener = new MessageListener(this, "230.0.0.0", 8888);
@@ -44,8 +41,8 @@ public class ChatClientImplementation implements ChatClient {
 
     @Override
     public void sendMessage(Message message) {
-        String jsonMsg = gson.toJson(message);
-        output.println(jsonMsg);
+        String strMsg = message.toString();
+        output.println(strMsg);
         output.flush();
     }
 
@@ -59,13 +56,9 @@ public class ChatClientImplementation implements ChatClient {
         support.removePropertyChangeListener(listener);
     }
 
-    public Chat connectOrCreateChat() {
-        Chat chat = new Chat();
-        return chat;
-    }
-
-    public void receiveBroadcast(String jsonMsg) {
-        Message message = gson.fromJson(jsonMsg, Message.class);
-        support.firePropertyChange("message_received", null, message);
+    public void receiveBroadcast(String msg) {
+        String strMsg = msg;
+        System.out.println("Received: " + strMsg);
+        support.firePropertyChange("message_received", null, strMsg);
     }
 }
