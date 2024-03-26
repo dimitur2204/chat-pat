@@ -15,6 +15,7 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
     private User chatter;
     public ChatModelManager(ChatClient client) {
         this.client = client;
+        this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
 

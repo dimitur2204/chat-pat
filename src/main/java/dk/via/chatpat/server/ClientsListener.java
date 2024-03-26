@@ -1,5 +1,6 @@
 package dk.via.chatpat.server;
 
+import dk.via.chatpat.client.MessageType;
 import dk.via.chatpat.model.User;
 
 import java.io.BufferedReader;
@@ -23,20 +24,24 @@ public class ClientsListener implements Runnable {
             PrintWriter output = StreamFactory.createWriter(socket);
             while (true) {
                 String msg = input.readLine();
-                Logger.getInstance().info("Received: " + msg);
+                if(msg == null) {
+                    output.println("Terminate connection");
+                    Logger.getInstance().info("Client disconnected: " + socket.getPort());
+                    return;
+                }
                 String cmd = msg.split(" ")[0];
                 switch (cmd) {
-                    case "EXIT":
+                    case MessageType.EXIT:
                         output.println("Terminate connection");
                         Logger.getInstance().info("Client disconnected: " + socket.getPort());
                         return;
-                    case "NEW_CHATTER":
+                    case MessageType.NEW_CHATTER:
                         User newChatter = new User(msg.split(" ")[1]);
                         ChatServer.addChatter(newChatter);
                         Logger.getInstance().info("New chatter: " + newChatter + " from " + socket.getPort());
                         broadcaster.broadcast("NEW_CHATTER " + newChatter);
                         break;
-                    case "GET_CHATTERS":
+                    case MessageType.GET_CHATTERS:
                         ArrayList<User> chatters = ChatServer.getChatters();
                         for (User chatter : chatters) {
                             output.println(chatter.toString());
@@ -44,9 +49,9 @@ public class ClientsListener implements Runnable {
                         Logger.getInstance().info("Sent chatters to client" + socket.getPort());
                         output.println("END");
                         break;
-                    case "SEND_MESSAGE":
+                    case MessageType.SEND_MESSAGE:
                         // Format: SEND_MESSAGE <message> <sender> <timestamp>
-                        broadcaster.broadcast("NEW_MESSAGE " + msg);
+                        broadcaster.broadcast(msg);
                         Logger.getInstance().info("Broadcasted message: " + msg + " from " + socket.getPort());
                         break;
                 }

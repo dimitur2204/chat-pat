@@ -19,7 +19,7 @@ public class ChatServer {
         Logger logger = Logger.getInstance();
         logger.addDestination(Destination.FILE);
         ServerSocket serverSocket = new ServerSocket(8080);
-        UDPBroadcaster broadcaster = new UDPBroadcaster("230.0.0.0", 8888);
+        UDPBroadcaster broadcaster = new UDPBroadcaster("230.0.0.1", 8888);
         logger.info("Server started");
         while(true) {
             Socket socket = serverSocket.accept();

@@ -20,6 +20,16 @@ public class Logger {
             writeToFile(msg);
         }
     }
+    public void debug(String message) {
+        Date date = new Date();
+        String msg = "\n" + "DEBUG: " + message + " " + date + "\n";
+        if (this.destination.contains(Destination.CONSOLE)) {
+            System.out.println(msg);
+        }
+        if (this.destination.contains(Destination.FILE)) {
+            writeToFile(msg);
+        }
+    }
     public void error(String message) {
         Date date = new Date();
         String msg = "ERROR: " + message + " " + date;

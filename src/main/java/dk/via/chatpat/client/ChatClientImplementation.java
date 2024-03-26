@@ -18,13 +18,14 @@ public class ChatClientImplementation implements ChatClient {
     private final BufferedReader input;
     private final PropertyChangeSupport support;
     private final MessageListener listener;
+
     public ChatClientImplementation(String host, int port) throws IOException {
         socket = new Socket(host, port);
         output = StreamFactory.createWriter(socket);
         input = StreamFactory.createReader(socket);
         support = new PropertyChangeSupport(this);
 
-        listener = new MessageListener(this, "230.0.0.0", 8888);
+        listener = new MessageListener(this, "230.0.0.1", 8888);
         Thread thread = new Thread(listener);
         thread.start();
     }
@@ -32,7 +33,7 @@ public class ChatClientImplementation implements ChatClient {
     @Override
     public void close() throws IOException {
         System.out.println("Closing connection...");
-        output.println("EXIT");
+        output.println(MessageType.EXIT);
         output.flush();
         socket.close();
         listener.close();
@@ -40,13 +41,12 @@ public class ChatClientImplementation implements ChatClient {
 
     @Override
     public void sendMessage(Message message) {
-        String strMsg = message.toString();
-        System.out.println("Sending: " + strMsg);
-        output.println(strMsg);
+        output.println(MessageType.SEND_MESSAGE + " " + message.getSender() + " " +  message.getTimestamp() + " " + message.getContent());
         output.flush();
     }
+
     public ArrayList<User> getChatters() throws IOException {
-        output.println("GET_CHATTERS");
+        output.println(MessageType.GET_CHATTERS);
         output.flush();
         ArrayList<User> chatters = new ArrayList<>();
         while (true) {
@@ -59,7 +59,7 @@ public class ChatClientImplementation implements ChatClient {
 
     @Override
     public void newChatter(User user) {
-        output.println("NEW_CHATTER " + user);
+        output.println(MessageType.NEW_CHATTER + " " + user);
         output.flush();
     }
 
@@ -74,7 +74,21 @@ public class ChatClientImplementation implements ChatClient {
     }
 
     public void receiveBroadcast(String msg) {
-        System.out.println("Received: " + msg);
-        support.firePropertyChange("message_received", null, msg);
+        String[] parts = msg.split(" ");
+        String cmd = parts[0];
+        switch (cmd) {
+            case MessageType.SEND_MESSAGE -> {
+                String sender = parts[1];
+                String timestamp = parts[2];
+                StringBuilder message = new StringBuilder();
+                for (int i = 0; i < parts.length; i++) {
+                   if (i > 2) message.append(parts[i]).append(" ");
+                }
+                support.firePropertyChange("message_received", null, new Message(message.toString(), new User(sender), Long.parseLong(timestamp)));
+            }
+            case MessageType.NEW_CHATTER -> {
+                support.firePropertyChange("new_chatter", null, new User(parts[1]));
+            }
+        }
     }
 }

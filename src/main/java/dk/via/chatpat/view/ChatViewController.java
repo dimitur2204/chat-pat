@@ -29,6 +29,7 @@ public class ChatViewController {
         this.viewHandler = viewHandler;
         this.viewModel = chatViewModel;
         msgField.textProperty().bindBidirectional(chatViewModel.messageProperty());
+        chatArea.textProperty().bindBidirectional(chatViewModel.chatAreaProperty());
         sendBtn.setOnAction(event -> chatViewModel.sendMessage());
         ObservableList<User> chatters = chatViewModel.getChatters();
         chattersList.setItems(chatters);
