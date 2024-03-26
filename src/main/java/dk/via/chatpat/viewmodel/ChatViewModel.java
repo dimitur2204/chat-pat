@@ -5,9 +5,13 @@ import dk.via.chatpat.model.Message;
 import dk.via.chatpat.model.User;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+
 public class ChatViewModel implements PropertyChangeListener {
     private final ChatModel model;
     private SimpleStringProperty message;
@@ -23,6 +27,15 @@ public class ChatViewModel implements PropertyChangeListener {
 
     public void sendMessage() {
         model.sendMessage(new Message(this.message.toString(), model.getChatter()));
+    }
+
+    public ObservableList<User> getChatters() {
+        try {
+            ArrayList<User> chatters = model.getChatters();
+            return FXCollections.observableList(chatters);
+        } catch (Exception e) {
+            throw new RuntimeException("Server communication error", e);
+        }
     }
 
     @Override

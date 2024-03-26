@@ -1,3 +1,4 @@
 target/
 .idea/
 mvvm_sockets.iml
+log.txt

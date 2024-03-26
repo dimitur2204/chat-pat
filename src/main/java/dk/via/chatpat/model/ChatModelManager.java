@@ -5,9 +5,11 @@ import dk.via.chatpat.client.ChatClient;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ChatModelManager implements ChatModel, PropertyChangeListener {
+
     private final ChatClient client;
     private final PropertyChangeSupport support;
     private User chatter;
@@ -17,12 +19,18 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
     }
 
     public void setChatter(User chatter) {
+        System.out.println("Setting chatter to " + chatter);
+        client.newChatter(chatter);
         this.chatter = chatter;
     }
 
     @Override
     public User getChatter() {
         return chatter;
+    }
+    @Override
+    public ArrayList<User> getChatters() throws IOException {
+        return this.client.getChatters();
     }
 
     @Override

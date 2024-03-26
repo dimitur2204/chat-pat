@@ -20,7 +20,7 @@ public class LoginViewModel {
     }
 
     public void openChat(ViewHandler viewHandler) {
-        viewHandler.openView(ViewFactory.CHAT);
         model.setChatter(new User(name.get()));
+        viewHandler.openView(ViewFactory.CHAT);
     }
 }

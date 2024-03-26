@@ -9,11 +9,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ChatClientImplementation implements ChatClient {
-    private static final String EXIT_JSON = """
-    {"operator": "exit"}
-    """;
 
     private final Socket socket;
     private final PrintWriter output;
@@ -33,7 +31,8 @@ public class ChatClientImplementation implements ChatClient {
 
     @Override
     public void close() throws IOException {
-        output.println(EXIT_JSON);
+        System.out.println("Closing connection...");
+        output.println("EXIT");
         output.flush();
         socket.close();
         listener.close();
@@ -42,7 +41,25 @@ public class ChatClientImplementation implements ChatClient {
     @Override
     public void sendMessage(Message message) {
         String strMsg = message.toString();
+        System.out.println("Sending: " + strMsg);
         output.println(strMsg);
+        output.flush();
+    }
+    public ArrayList<User> getChatters() throws IOException {
+        output.println("GET_CHATTERS");
+        output.flush();
+        ArrayList<User> chatters = new ArrayList<>();
+        while (true) {
+            String chatter = input.readLine();
+            if (chatter.equals("END")) break;
+            chatters.add(new User(chatter));
+        }
+        return chatters;
+    }
+
+    @Override
+    public void newChatter(User user) {
+        output.println("NEW_CHATTER " + user);
         output.flush();
     }
 
@@ -57,8 +74,7 @@ public class ChatClientImplementation implements ChatClient {
     }
 
     public void receiveBroadcast(String msg) {
-        String strMsg = msg;
-        System.out.println("Received: " + strMsg);
-        support.firePropertyChange("message_received", null, strMsg);
+        System.out.println("Received: " + msg);
+        support.firePropertyChange("message_received", null, msg);
     }
 }
