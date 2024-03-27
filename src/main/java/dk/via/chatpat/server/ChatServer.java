@@ -1,6 +1,6 @@
 package dk.via.chatpat.server;
 
-import dk.via.chatpat.model.User;
+import dk.via.chatpat.model.Chatter;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,11 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ChatServer {
-    private static ArrayList<User> chatters = new ArrayList<>();
-    public static void addChatter(User user) {
-        chatters.add(user);
+    private static ArrayList<Chatter> chatters = new ArrayList<>();
+    public static void addChatter(Chatter chatter) {
+        chatters.add(chatter);
     }
-    public static ArrayList<User> getChatters() {
+    public static ArrayList<Chatter> getChatters() {
         return chatters;
     }
     public static void main(String[] args) throws IOException {

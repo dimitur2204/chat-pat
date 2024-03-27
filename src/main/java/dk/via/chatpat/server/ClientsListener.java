@@ -1,7 +1,7 @@
 package dk.via.chatpat.server;
 
 import dk.via.chatpat.client.MessageType;
-import dk.via.chatpat.model.User;
+import dk.via.chatpat.model.Chatter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,14 +36,14 @@ public class ClientsListener implements Runnable {
                         Logger.getInstance().info("Client disconnected: " + socket.getPort());
                         return;
                     case MessageType.NEW_CHATTER:
-                        User newChatter = new User(msg.split(" ")[1]);
+                        Chatter newChatter = new Chatter(msg.split(" ")[1]);
                         ChatServer.addChatter(newChatter);
                         Logger.getInstance().info("New chatter: " + newChatter + " from " + socket.getPort());
                         broadcaster.broadcast("NEW_CHATTER " + newChatter);
                         break;
                     case MessageType.GET_CHATTERS:
-                        ArrayList<User> chatters = ChatServer.getChatters();
-                        for (User chatter : chatters) {
+                        ArrayList<Chatter> chatters = ChatServer.getChatters();
+                        for (Chatter chatter : chatters) {
                             output.println(chatter.toString());
                         }
                         Logger.getInstance().info("Sent chatters to client" + socket.getPort());

@@ -45,21 +45,21 @@ public class ChatClientImplementation implements ChatClient {
         output.flush();
     }
 
-    public ArrayList<User> getChatters() throws IOException {
+    public ArrayList<Chatter> getChatters() throws IOException {
         output.println(MessageType.GET_CHATTERS);
         output.flush();
-        ArrayList<User> chatters = new ArrayList<>();
+        ArrayList<Chatter> chatters = new ArrayList<>();
         while (true) {
             String chatter = input.readLine();
             if (chatter.equals("END")) break;
-            chatters.add(new User(chatter));
+            chatters.add(new Chatter(chatter));
         }
         return chatters;
     }
 
     @Override
-    public void newChatter(User user) {
-        output.println(MessageType.NEW_CHATTER + " " + user);
+    public void newChatter(Chatter chatter) {
+        output.println(MessageType.NEW_CHATTER + " " + chatter);
         output.flush();
     }
 
@@ -84,10 +84,10 @@ public class ChatClientImplementation implements ChatClient {
                 for (int i = 0; i < parts.length; i++) {
                    if (i > 2) message.append(parts[i]).append(" ");
                 }
-                support.firePropertyChange("message_received", null, new Message(message.toString(), new User(sender), Long.parseLong(timestamp)));
+                support.firePropertyChange("message_received", null, new Message(message.toString(), new Chatter(sender), Long.parseLong(timestamp)));
             }
             case MessageType.NEW_CHATTER -> {
-                support.firePropertyChange("new_chatter", null, new User(parts[1]));
+                support.firePropertyChange("new_chatter", null, new Chatter(parts[1]));
             }
         }
     }

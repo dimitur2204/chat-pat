@@ -4,21 +4,21 @@ import java.util.Date;
 
 public class Message {
     private String content;
-    private User sender;
+    private Chatter sender;
     private long timestamp;
-    public Message(String content, User sender) {
+    public Message(String content, Chatter sender) {
         this.content = content;
         this.sender = sender;
         this.timestamp = new Date().getTime();
     }
 
-    public Message(String content, User sender, long timestamp) {
+    public Message(String content, Chatter sender, long timestamp) {
         this.content = content;
         this.sender = sender;
         this.timestamp = timestamp;
     }
 
-    public User getSender() {
+    public Chatter getSender() {
         return sender;
     }
 

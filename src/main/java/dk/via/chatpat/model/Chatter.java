@@ -1,8 +1,9 @@
 package dk.via.chatpat.model;
 
-public class User {
+public class Chatter {
     private String name;
-    public User(String name) {
+    private boolean online;
+    public Chatter(String name) {
         this.name = name;
     }
 
@@ -13,8 +14,8 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof User) {
-            User other = (User) obj;
+        if (obj instanceof Chatter) {
+            Chatter other = (Chatter) obj;
             return name.equals(other.name);
         } else {
             return false;

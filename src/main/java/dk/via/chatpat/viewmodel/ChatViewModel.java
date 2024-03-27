@@ -2,7 +2,7 @@ package dk.via.chatpat.viewmodel;
 
 import dk.via.chatpat.model.ChatModel;
 import dk.via.chatpat.model.Message;
-import dk.via.chatpat.model.User;
+import dk.via.chatpat.model.Chatter;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,7 +12,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -20,7 +19,7 @@ public class ChatViewModel implements PropertyChangeListener {
     private final ChatModel model;
     private SimpleStringProperty message;
     private SimpleStringProperty chatArea;
-    private ObservableList<User> chatters;
+    private ObservableList<Chatter> chatters;
 
     public ChatViewModel(ChatModel model) throws IOException {
         this.model = model;
@@ -42,12 +41,12 @@ public class ChatViewModel implements PropertyChangeListener {
         model.sendMessage(new Message(this.message.getValue(), model.getChatter()));
     }
 
-    public ObservableList<User> getChatters() {
+    public ObservableList<Chatter> getChatters() {
         return this.chatters;
     }
 
-    private void addChatter(User user) {
-        this.chatters.add(user);
+    private void addChatter(Chatter chatter) {
+        this.chatters.add(chatter);
     }
 
     private void appendToChat(String message) {
@@ -73,9 +72,9 @@ public class ChatViewModel implements PropertyChangeListener {
                 }
             }
             if (propName.equals("new_chatter")) {
-                if (newValue instanceof User user) {
-                    addChatter(user);
-                    appendToChat(user + " has just joined the chat." + "\n");
+                if (newValue instanceof Chatter chatter) {
+                    addChatter(chatter);
+                    appendToChat(chatter + " has just joined the chat." + "\n");
                 }
             }
         });

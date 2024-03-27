@@ -12,25 +12,25 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
 
     private final ChatClient client;
     private final PropertyChangeSupport support;
-    private User chatter;
+    private Chatter chatter;
     public ChatModelManager(ChatClient client) {
         this.client = client;
         this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
 
-    public void setChatter(User chatter) {
+    public void setChatter(Chatter chatter) {
         System.out.println("Setting chatter to " + chatter);
         client.newChatter(chatter);
         this.chatter = chatter;
     }
 
     @Override
-    public User getChatter() {
+    public Chatter getChatter() {
         return chatter;
     }
     @Override
-    public ArrayList<User> getChatters() throws IOException {
+    public ArrayList<Chatter> getChatters() throws IOException {
         return this.client.getChatters();
     }
 

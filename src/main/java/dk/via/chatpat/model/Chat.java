@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Chat {
     private ArrayList<Message> messages;
-    private ArrayList<User> chatters;
+    private ArrayList<Chatter> chatters;
 
     public Chat() {
         this.messages = new ArrayList<>();
         this.chatters = new ArrayList<>();
     }
 
-    public void addUser(User user) {
-        chatters.add(user);
+    public void addUser(Chatter chatter) {
+        chatters.add(chatter);
     }
 
     public void addMessage(Message message) {
