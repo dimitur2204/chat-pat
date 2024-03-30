@@ -37,6 +37,16 @@ public class ClientsListener implements Runnable {
                         return;
                     case MessageType.NEW_CHATTER:
                         Chatter newChatter = new Chatter(msg.split(" ")[1]);
+                        //Check if the chatter is already in the list and change to online if it is
+                        for (Chatter chatter : ChatServer.getChatters()) {
+                            if (chatter.equals(newChatter)) {
+                                chatter.setOnline(true);
+                                broadcaster.broadcast("NEW_CHATTER " + chatter);
+                                Logger.getInstance().info("Chatter " + chatter + " is online" + socket.getPort());
+                                return;
+                            }
+                        }
+                        newChatter.setOnline(true);
                         ChatServer.addChatter(newChatter);
                         Logger.getInstance().info("New chatter: " + newChatter + " from " + socket.getPort());
                         broadcaster.broadcast("NEW_CHATTER " + newChatter);
