@@ -60,7 +60,6 @@ public class ClientsListener implements Runnable {
                         output.println("END");
                         break;
                     case MessageType.SEND_MESSAGE:
-                        // Format: SEND_MESSAGE <message> <sender> <timestamp>
                         broadcaster.broadcast(msg);
                         Logger.getInstance().info("Broadcasted message: " + msg + " from " + socket.getPort());
                         break;
