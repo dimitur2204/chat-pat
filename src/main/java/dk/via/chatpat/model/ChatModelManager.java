@@ -1,25 +1,35 @@
 package dk.via.chatpat.model;
 
-import dk.via.chatpat.client.ChatClient;
+import dk.via.chatpat.shared.IChat;
+import dk.via.chatpat.shared.MessageType;
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import javafx.application.Platform;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ChatModelManager implements ChatModel, PropertyChangeListener {
+public class ChatModelManager extends UnicastRemoteObject implements ChatModel, RemotePropertyChangeListener<IChat> {
 
-    private final ChatClient client;
+    private final IChat client;
     private final PropertyChangeSupport support;
     private Chatter chatter;
-    public ChatModelManager(ChatClient client) {
+
+    public ChatModelManager(IChat client) throws RemoteException {
+        super();
         this.client = client;
         this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
 
-    public void setChatter(Chatter chatter) {
+    public void setChatter(Chatter chatter) throws RemoteException {
         System.out.println("Setting chatter to " + chatter);
         client.newChatter(chatter);
         this.chatter = chatter;
@@ -29,19 +39,25 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
     public Chatter getChatter() {
         return chatter;
     }
+
     @Override
-    public ArrayList<Chatter> getChatters() throws IOException {
-        return this.client.getChatters();
+    public ArrayList<Chatter> getChatters() {
+        try {
+            return this.client.getChatters();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void sendMessage(Message message) {
-        try{
+        try {
             client.sendMessage(message);
         } catch (Exception e) {
             throw new RuntimeException("Server communication error", e);
         }
     }
+
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
@@ -53,7 +69,8 @@ public class ChatModelManager implements ChatModel, PropertyChangeListener {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        support.firePropertyChange(evt);
+    public void propertyChange(RemotePropertyChangeEvent evt) {
+        System.out.println("Property change: " + evt.getPropertyName());
+        support.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
     }
 }

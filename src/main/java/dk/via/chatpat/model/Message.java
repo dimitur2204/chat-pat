@@ -1,8 +1,9 @@
 package dk.via.chatpat.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
     private String content;
     private Chatter sender;
     private long timestamp;

@@ -1,4 +1,4 @@
-package dk.via.chatpat.client;
+package dk.via.chatpat.shared;
 
 public class MessageType {
     public static final String SEND_MESSAGE = "SEND_MESSAGE";

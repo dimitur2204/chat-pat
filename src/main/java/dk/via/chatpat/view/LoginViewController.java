@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 
+import java.rmi.RemoteException;
+
 public class LoginViewController {
     public TextField nameField;
     public Button chatButton;
@@ -17,7 +19,13 @@ public class LoginViewController {
         this.viewModel = loginViewModel;
         this.root = root;
         nameField.textProperty().bindBidirectional(loginViewModel.nameProperty());
-        chatButton.setOnAction(event -> loginViewModel.openChat(viewHandler));
+        chatButton.setOnAction(event -> {
+            try {
+                loginViewModel.openChat(viewHandler);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public Region getRoot() {

@@ -1,6 +1,8 @@
 package dk.via.chatpat.model;
 
-public class Chatter {
+import java.io.Serializable;
+
+public class Chatter implements Serializable {
     private String name;
     private boolean online;
     public Chatter(String name) {

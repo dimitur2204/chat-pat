@@ -3,6 +3,7 @@ package dk.via.chatpat.viewmodel;
 import dk.via.chatpat.model.ChatModel;
 import dk.via.chatpat.model.Message;
 import dk.via.chatpat.model.Chatter;
+import dk.via.chatpat.shared.MessageType;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -62,7 +63,8 @@ public class ChatViewModel implements PropertyChangeListener {
         Platform.runLater(() -> {
             String propName = evt.getPropertyName();
             Object newValue = evt.getNewValue();
-            if (propName.equals("message_received")) {
+            System.out.println("Property changed in VM: " + propName);
+            if (propName.equals(MessageType.SEND_MESSAGE)) {
                 if (newValue instanceof Message msg) {
                     Date date = new Date(msg.getTimestamp());
                     SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
@@ -71,7 +73,7 @@ public class ChatViewModel implements PropertyChangeListener {
                     appendToChat(formattedDate + " - " + msg.getSender() + ": " + msg.getContent() + "\n");
                 }
             }
-            if (propName.equals("new_chatter")) {
+            if (propName.equals(MessageType.NEW_CHATTER)) {
                 if (newValue instanceof Chatter chatter) {
                     addChatter(chatter);
                     appendToChat(chatter + " has just joined the chat." + "\n");

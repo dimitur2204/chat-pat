@@ -6,6 +6,8 @@ import dk.via.chatpat.view.ViewFactory;
 import dk.via.chatpat.view.ViewHandler;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.rmi.RemoteException;
+
 public class LoginViewModel {
 
     private SimpleStringProperty name;
@@ -19,7 +21,7 @@ public class LoginViewModel {
         return name;
     }
 
-    public void openChat(ViewHandler viewHandler) {
+    public void openChat(ViewHandler viewHandler) throws RemoteException {
         model.setChatter(new Chatter(name.get()));
         viewHandler.openView(ViewFactory.CHAT);
     }
