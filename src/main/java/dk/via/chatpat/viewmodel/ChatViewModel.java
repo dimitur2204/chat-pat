@@ -63,7 +63,6 @@ public class ChatViewModel implements PropertyChangeListener {
         Platform.runLater(() -> {
             String propName = evt.getPropertyName();
             Object newValue = evt.getNewValue();
-            System.out.println("Property changed in VM: " + propName);
             if (propName.equals(MessageType.SEND_MESSAGE)) {
                 if (newValue instanceof Message msg) {
                     Date date = new Date(msg.getTimestamp());

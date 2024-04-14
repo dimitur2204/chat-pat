@@ -34,7 +34,7 @@ public class Message implements Serializable {
     @Override
     public String toString() {
         String date = new Date(timestamp).toString();
-        return "From: " + sender + content + " At: " + date;
+        return "From: " + sender + ": " + content + " At: " + date;
     }
 }
 

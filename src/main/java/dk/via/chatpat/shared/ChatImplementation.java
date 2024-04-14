@@ -2,7 +2,6 @@ package dk.via.chatpat.shared;
 
 import dk.via.chatpat.model.*;
 import dk.via.chatpat.server.Logger;
-import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 
@@ -21,7 +20,7 @@ public class ChatImplementation implements IChat {
 
     @Override
     public void sendMessage(Message message) throws RemoteException {
-        Logger.getInstance().info("Broadcasted message: " + message + " from ");
+        Logger.getInstance().info("Broadcasted message: " + message);
         support.firePropertyChange(MessageType.SEND_MESSAGE, null, message);
     }
 

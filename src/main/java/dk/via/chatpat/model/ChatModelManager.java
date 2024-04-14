@@ -30,7 +30,6 @@ public class ChatModelManager extends UnicastRemoteObject implements ChatModel, 
     }
 
     public void setChatter(Chatter chatter) throws RemoteException {
-        System.out.println("Setting chatter to " + chatter);
         client.newChatter(chatter);
         this.chatter = chatter;
     }
@@ -70,7 +69,6 @@ public class ChatModelManager extends UnicastRemoteObject implements ChatModel, 
 
     @Override
     public void propertyChange(RemotePropertyChangeEvent evt) {
-        System.out.println("Property change: " + evt.getPropertyName());
         support.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
     }
 }
